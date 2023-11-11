@@ -1,0 +1,64 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Node.js and MySQL App</title>
+</head>
+<body>
+
+  <h1>User List</h1>
+
+  <!-- Form to add a new user -->
+  <form id="addUserForm">
+    <label for="userName">Name:</label>
+    <input type="text" id="userName" name="userName" required>
+    <button type="submit" >Add User</button>
+  </form>
+
+  <!-- Display existing users -->
+  <ul id="userList"></ul>
+
+  <!-- Include your app.js file as a script -->
+  <script src="app.js"></script>
+  <script>
+    // Attach event listener to the form
+    const addUserForm = document.getElementById('addUserForm');
+    addUserForm.addEventListener('submit', addUser);
+
+    async function addUser(event) {
+      event.preventDefault();
+
+      const userNameInput = document.getElementById('userName');
+      const userName = userNameInput.value;
+      console.log(userName)
+
+      try {
+        const response = await fetch('http://localhost:9000/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name: userName }),
+        });
+
+        if (response.ok) {
+          console.log('User added successfully');
+          userNameInput.value = ''; // Clear input field
+          fetchUsers(); // Refresh user list
+        } else {
+          console.error('Error adding user:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error adding user:', error);
+      }
+    }
+
+    // Fetch and display users when the page loads
+    fetchUsers();
+  </script>
+
+</body>
+</html>
