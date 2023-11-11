@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "npm test"
+    "start": "nodemon your-app.js"
   },
   "author": "viraj",
   "license": "ISC",
